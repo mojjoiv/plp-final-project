@@ -11,15 +11,23 @@ const PersonalDetails = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Submitting form...");
     const user = auth.currentUser;
+    console.log("Current user:", user); // Check if user is correctly logged in
     if (user) {
       const userRef = doc(db, 'users', user.uid);
-      await setDoc(userRef, {
-        phoneNumber,
-        nextOfKinName,
-        nextOfKinPhone,
-      });
-      navigate('/qr');
+      console.log("User reference:", userRef); // Check the document reference
+      try {
+        await setDoc(userRef, {
+          phoneNumber,
+          nextOfKinName,
+          nextOfKinPhone,
+        });
+        console.log("Data saved successfully!");
+        navigate('/qr');
+      } catch (error) {
+        console.error("Error saving data:", error);
+      }
     }
   };
 
