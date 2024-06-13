@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
-const SignUp = () => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSignUp = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      navigate('/login');
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate('/details');
     } catch (error) {
       console.error(error);
     }
@@ -20,8 +20,8 @@ const SignUp = () => {
 
   return (
     <div>
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSignUp}>
+      <h2>Login</h2>
+      <form onSubmit={handleLogin}>
         <input
           type="email"
           value={email}
@@ -36,10 +36,10 @@ const SignUp = () => {
           placeholder="Password"
           required
         />
-        <button type="submit">Sign Up</button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );
 };
 
-export default SignUp;
+export default Login;

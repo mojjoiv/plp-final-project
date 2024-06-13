@@ -1,10 +1,10 @@
-// src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import SignUp from './components/SignUp';
 import Login from './components/Login';
 import PersonalDetails from './components/PersonalDetails';
 import QRCodePage from './components/QRCodePage';
+import QRCodeReader from './components/QRCodeReader';
 
 function App() {
   return (
@@ -18,25 +18,19 @@ function App() {
             <li>
               <Link to="/login">Login</Link>
             </li>
+            <li>
+              <Link to="/scan">Scan QR Code</Link>
+            </li>
           </ul>
         </nav>
-        <Switch>
-          <Route path="/signup">
-            <SignUp />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/details">
-            <PersonalDetails />
-          </Route>
-          <Route path="/qr">
-            <QRCodePage />
-          </Route>
-          <Route path="/">
-            <h2>Welcome to the QR Code Generator App</h2>
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/details" element={<PersonalDetails />} />
+          <Route path="/qr" element={<QRCodePage />} />
+          <Route path="/scan" element={<QRCodeReader />} />
+          <Route path="/" element={<h2>Welcome to the QR Code Generator App</h2>} />
+        </Routes>
       </div>
     </Router>
   );
