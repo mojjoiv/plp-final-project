@@ -1,39 +1,53 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import SignUp from './components/SignUp';
-import Login from './components/Login';
-import PersonalDetails from './components/PersonalDetails';
-import QRCodePage from './components/QRCodePage';
-import QRCodeReader from './components/QRCodeReader';
+import { useEffect, useState } from 'react'; 
+import './App.css'; 
 
-function App() {
-  return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/signup">Sign Up</Link>
-            </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/scan">Scan QR Code</Link>
-            </li>
-          </ul>
-        </nav>
-        <Routes>
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/details" element={<PersonalDetails />} />
-          <Route path="/qr" element={<QRCodePage />} />
-          <Route path="/scan" element={<QRCodeReader />} />
-          <Route path="/" element={<h2>Welcome to the QR Code Generator App</h2>} />
-        </Routes>
-      </div>
-    </Router>
-  );
-}
+function App() { 
+const [temp, setTemp] = useState(""); 
+const [word, setWord] = useState(""); 
+const [size, setSize] = useState(400); 
+const [bgColor, setBgColor] = useState("ffffff"); 
+const [qrCode, setQrCode] = useState(""); 
+
+useEffect(() => { 
+	setQrCode 
+(`http://api.qrserver.com/v1/create-qr-code/?data=${word}!&size=${size}x${size}&bgcolor=${bgColor}`); 
+}, [word, size, bgColor]); 
+ 
+function handleClick() { 
+	setWord(temp); 
+} 
+
+return ( 
+	<div className="App"> 
+	<h1>QR Code Generator</h1> 
+	<div className="input-box"> 
+		<div className="gen"> 
+		<input type="text" onChange={ 
+			(e) => {setTemp(e.target.value)}} 
+			placeholder="Enter text to encode" /> 
+		<button className="button"
+			onClick={handleClick}> 
+			Generate 
+		</button> 
+		</div> 
+		<div className="extra"> 
+		<h5>Background Color:</h5> 
+		<input type="color" onChange={(e) => 
+		{ setBgColor(e.target.value.substring(1)) }} /> 
+		<h5>Dimension:</h5> 
+		<input type="range" min="200" max="600"
+		value={size} onChange={(e) => 
+		{setSize(e.target.value)}} /> 
+		</div> 
+	</div> 
+	<div className="output-box"> 
+		<img src={qrCode} alt="" /> 
+		<a href={qrCode} download="QRCode"> 
+		<button type="button">Download</button> 
+		</a> 
+	</div> 
+	</div> 
+); 
+} 
 
 export default App;
